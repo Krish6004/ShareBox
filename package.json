@@ -1,0 +1,40 @@
+{
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^1.41.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.7.1",
+    "firebase-admin": "^13.4.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.15.2",
+    "multer": "^2.0.1",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nanoid": "^5.1.6",
+    "nodemon": "^3.1.10",
+    "router": "^2.2.0",
+    "uuid": "^11.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "name": "sharebox",
+  "version": "2.0.0",
+  "main": "server.js",
+  "description": "ShareBox — Share Files. Instantly.",
+  "scripts": {
+    "start": "node server.js",
+    "build:client": "npm --prefix frontend install && npm --prefix frontend run build"
+  },
+  "keywords": [
+    "file-sharing",
+    "ephemeral",
+    "temporary-storage",
+    "sharebox"
+  ],
+  "license": "ISC"
+}

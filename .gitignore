@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+!.env.example
+serviceAccountKey.json
+uploads/
+dist/
+frontend/dist/
+.DS_Store
+*.log
