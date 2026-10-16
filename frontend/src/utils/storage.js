@@ -155,7 +155,9 @@ export function saveUpload({
       fileSize: fileSize || 0,
       fileType: fileType || 'application/octet-stream',
       category,
-      fileLink: fileLink || `${window.location.origin}/download/${resolvedUuid}`,
+      fileLink: (fileLink && (!fileLink.includes('localhost') || window.location.origin.includes('localhost')))
+        ? fileLink
+        : `${window.location.origin}/download/${resolvedUuid}`,
       cloudLink: cloudLink || '',
       downloadLink: downloadLink || '',
       uploadedAt: now.toISOString(),

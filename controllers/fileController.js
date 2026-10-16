@@ -10,6 +10,29 @@ const connectDB = require("../db");
 // Short ID Generator (8 chars hex = 4 bytes)
 const generateShortId = () => crypto.randomBytes(4).toString("hex");
 
+// Dynamically determine the frontend client base URL from request origin/referer or env
+const getClientBaseUrl = (req) => {
+  const origin = req.get("origin") || req.get("referer");
+  if (origin && !origin.includes("localhost")) {
+    try {
+      return new URL(origin).origin;
+    } catch (_) {
+      return origin.replace(/\/+$/, "");
+    }
+  }
+  if (process.env.CLIENT_URL && !process.env.CLIENT_URL.includes("localhost")) {
+    return process.env.CLIENT_URL.trim().replace(/\/+$/, "");
+  }
+  if (origin) {
+    try {
+      return new URL(origin).origin;
+    } catch (_) {
+      return origin.replace(/\/+$/, "");
+    }
+  }
+  return (process.env.CLIENT_URL || "http://localhost:5173").trim().replace(/\/+$/, "");
+};
+
 /**
  * @route   POST /api (or POST /api/files)
  * @desc    Upload file to Cloudinary & MongoDB (associates with user if authenticated)
@@ -64,7 +87,7 @@ const uploadFile = async (req, res, next) => {
       });
     }
 
-    const clientURL = process.env.CLIENT_URL || req.get("origin") || "http://localhost:5173";
+    const clientURL = getClientBaseUrl(req);
     const fileLink = `${clientURL}/download/${response.uuid}`;
 
     return res.json({
@@ -172,7 +195,7 @@ const getMyFiles = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    const clientURL = process.env.CLIENT_URL || req.get("origin") || "http://localhost:5173";
+    const clientURL = getClientBaseUrl(req);
 
     const formattedFiles = files.map((file) => {
       // Calculate remaining TTL (24h = 86400s)

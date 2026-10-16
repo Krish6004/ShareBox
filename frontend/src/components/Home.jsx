@@ -160,12 +160,17 @@ export default function Home() {
         },
       });
 
-      if (response.data && response.data.fileLink) {
+      if (response.data && (response.data.fileLink || response.data.uuid)) {
+        // Guarantee share link always points to the current active frontend domain (Vercel)
+        const activeLink = response.data.uuid
+          ? `${window.location.origin}/download/${response.data.uuid}`
+          : response.data.fileLink.replace(/^http:\/\/localhost:\d+/, window.location.origin);
+
         setUploadProgress(100);
-        setFileLink(response.data.fileLink);
+        setFileLink(activeLink);
         // Persist upload record to local dashboard storage
         saveUpload({
-          fileLink: response.data.fileLink,
+          fileLink: activeLink,
           fileName: file.name,
           fileSize: file.size,
           fileType: file.type,

@@ -33,7 +33,10 @@ export default function UploadCard({
   const [copied, setCopied] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const downloadUrl = file.fileLink || `${window.location.origin}/download/${file.uuid}`;
+  const rawUrl = file.fileLink || (file.uuid ? `/download/${file.uuid}` : '');
+  const downloadUrl = (rawUrl.startsWith('http://localhost') && !window.location.origin.includes('localhost'))
+    ? rawUrl.replace(/^http:\/\/localhost:\d+/, window.location.origin)
+    : (rawUrl.startsWith('http') ? rawUrl : `${window.location.origin}${rawUrl}`);
   const countdown = getExpiryCountdown(file.expiresAt);
   const isActive = !countdown.isExpired;
 
